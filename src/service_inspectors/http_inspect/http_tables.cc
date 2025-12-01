@@ -182,6 +182,7 @@ const StrCode HttpMsgHeadShared::content_type_list[] =
     { CT_APPLICATION_X_JAVASCRIPT, "application/x-javascript" },
     { CT_APPLICATION_X_ECMASCRIPT, "application/x-ecmascript" },
     { CT_APPLICATION_XHTML_XML,    "application/xhtml+xml" },
+    { CT_MULTIPART_FORM_DATA,      "multipart/form-data" },
     { CT_TEXT_JAVASCRIPT,          "text/javascript" },
     { CT_TEXT_JAVASCRIPT_1_0,      "text/javascript1.0" },
     { CT_TEXT_JAVASCRIPT_1_1,      "text/javascript1.1" },

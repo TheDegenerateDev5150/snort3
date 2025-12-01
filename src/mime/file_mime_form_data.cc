@@ -1,5 +1,5 @@
 //--------------------------------------------------------------------------
-// Copyright (C) 2022-2025 Cisco and/or its affiliates. All rights reserved.
+// Copyright (C) 2025-2025 Cisco and/or its affiliates. All rights reserved.
 //
 // This program is free software; you can redistribute it and/or modify it
 // under the terms of the GNU General Public License Version 2 as published
@@ -15,37 +15,34 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //--------------------------------------------------------------------------
+// file_mime_form_data.cc author Anna Norokh <anorokh@cisco.com>
 
-// http_event_ids.h author Russ Combs <rucombs@cisco.com>
-
-// Inspection events published by the Http Inspector. Modules can subscribe
-// to receive the events.
-
-#ifndef HTTP_EVENT_IDS_H
-#define HTTP_EVENT_IDS_H
-
-#include "framework/data_bus.h"
-
-namespace snort
-{
-// These are common values between the HTTP inspector and the subscribers.
-struct HttpEventIds
-{ enum : unsigned {
-
-    REQUEST_HEADER,
-    RESPONSE_HEADER,
-    REQUEST_BODY,
-    BODY,
-    DOH_BODY,
-    END_OF_TRANSACTION,
-    HTTP_PUBLISH_LENGTH,
-    MIME_FORM_DATA,
-
-    num_ids
-}; };
-
-const PubKey http_pub_key { "http_inspect", HttpEventIds::num_ids };
-
-}
+#ifdef HAVE_CONFIG_H
+#include "config.h"
 #endif
+
+#include "file_mime_form_data.h"
+
+using namespace snort;
+
+void MimeFormDataCollector::finalize_field(const std::string& filename)
+{
+    if (!is_form_data or current_field_name.empty() or is_size_exceeded)
+        return;
+
+    const std::string& value_to_use = (is_file_upload and !filename.empty())
+        ? filename : current_field_value;
+
+    const size_t field_total_len = current_field_name.length() + 1 + value_to_use.length() +
+        (form_fields.empty() ? 0 : 1);
+
+    if (accumulated_size + field_total_len > MAX_FORM_DATA_SIZE)
+    {
+        is_size_exceeded = true;
+        return;
+    }
+
+    form_fields.emplace_back(current_field_name, value_to_use);
+    accumulated_size += field_total_len;
+}
 

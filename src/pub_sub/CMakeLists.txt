@@ -22,6 +22,7 @@ set (PUB_SUB_INCLUDES
     http_body_event.h
     http_event_ids.h
     http_events.h
+    http_form_data_event.h
     http_publish_length_event.h
     http_request_body_event.h
     http_transaction_end_event.h
@@ -49,6 +50,7 @@ add_library( pub_sub OBJECT
     eof_event.cc
     http_body_event.cc
     http_events.cc
+    http_form_data_event.cc
     http_request_body_event.cc
     http_transaction_end_event.cc
     quic_events.cc

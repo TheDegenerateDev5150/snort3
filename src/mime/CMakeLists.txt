@@ -4,6 +4,7 @@ set( MIME_INCLUDES
     decode_base.h
     file_mime_config.h
     file_mime_decode.h
+    file_mime_form_data.h
     file_mime_log.h
     file_mime_paf.h
     file_mime_process.h
@@ -25,6 +26,7 @@ add_library ( mime OBJECT
     file_mime_context_data.cc
     file_mime_context_data.h
     file_mime_decode.cc
+    file_mime_form_data.cc
     file_mime_log.cc
     file_mime_paf.cc
     file_mime_process.cc
