@@ -402,6 +402,13 @@ void AppInfoManager::load_odp_config(OdpContext& odp_ctxt, const char* path)
                     odp_ctxt.recheck_for_portservice_appid = true;
                 }
             }
+            else if (!(strcasecmp(conf_key, "mdns_deviceinfo")))
+            {
+                if (!(strcasecmp(conf_val, "enabled")))
+                {
+                    odp_ctxt.mdns_deviceinfo = true;
+                }
+            }
             else if (!(strcasecmp(conf_key, "bittorrent_aggressiveness")))
             {
                 int aggressiveness = atoi(conf_val);

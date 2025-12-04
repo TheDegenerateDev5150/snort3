@@ -40,6 +40,7 @@ set (PUB_SUB_INCLUDES
     ssl_events.h
     stream_event_ids.h
     dns_payload_event.h
+    deviceinfo_events.h
 )
 
 add_library( pub_sub OBJECT

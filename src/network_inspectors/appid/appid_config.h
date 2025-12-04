@@ -135,6 +135,7 @@ public:
     bool dns_host_reporting = true;
     bool referred_appId_disabled = false;
     bool mdns_user_reporting = true;
+    bool mdns_deviceinfo = false;
     bool chp_userid_disabled = false;
     bool is_host_port_app_cache_runtime = false;
     bool check_host_port_app_cache = false;
