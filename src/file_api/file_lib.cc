@@ -533,7 +533,7 @@ inline void FileContext::finalize_file_type()
 
 void FileContext::log_file_event(Flow* flow, FilePolicyBase* policy)
 {
-    // log file event either when filename is set or if it is a asymmetric flow  
+    // log file event either when filename is set or if it is a asymmetric flow
     if ( is_file_name_set() or !flow->two_way_traffic() )
     {
         bool log_needed = true;
@@ -655,10 +655,7 @@ void FileInfo::reset()
 {
     verdict = FILE_VERDICT_UNKNOWN;
     processing_complete = false;
-    set_file_size(0);
     reset_sha();
-    if (is_file_name_set())
-        unset_file_name();
     pending_expire_time.tv_sec = 0;
     pending_expire_time.tv_usec = 0;
 }
@@ -690,10 +687,7 @@ void FileContext::reset()
 {
     verdict = FILE_VERDICT_UNKNOWN;
     processing_complete = false;
-    set_file_size(0);
     reset_sha();
-    if (is_file_name_set())
-        unset_file_name();
     remove_segments();
 }
 
@@ -1222,12 +1216,15 @@ TEST_CASE ("reset", "[file_info]")
     info.verdict = FILE_VERDICT_BLOCK;
     info.processing_complete = true;
     info.set_file_name("test", 4);
+    info.set_file_size(123);
 
     info.reset();
 
     CHECK (false == info.processing_complete);
     CHECK (FILE_VERDICT_UNKNOWN == info.verdict);
-    CHECK (false == info.is_file_name_set());
+    CHECK (true == info.is_file_name_set());
+    CHECK (std::string("test") == info.get_file_name());
+    CHECK (123 == info.get_file_size());
 }
 
 TEST_CASE ("re_eval", "[file_info]")
