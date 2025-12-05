@@ -87,7 +87,11 @@ public:
     bool is_host_set() const;
 
     MimeFormDataCollector::FieldVector&& form_data_content()
-    { return std::move(form_data_collector.take_fields()); }
+    {
+        form_data_collector.finalize_field(filename);
+        form_data_collector.reset_part();
+        return std::move(form_data_collector.take_fields());
+    }
 
     const BufferData& get_ole_buf();
     const BufferData& get_vba_inspect_buf();
