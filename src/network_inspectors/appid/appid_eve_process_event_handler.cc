@@ -55,6 +55,8 @@ void AppIdEveProcessEventHandler::handle(DataEvent& event, Flow* flow)
 
         APPID_LOG(p, TRACE_DEBUG_LEVEL, "New AppId session at mercury event\n");
     }
+    else if (appidDebug->is_enabled())
+        appidDebug->activate(flow, asd, inspector.get_ctxt().config.log_all_sessions);
 
     if (!asd->get_session_flags(APPID_SESSION_DISCOVER_APP | APPID_SESSION_SPECIAL_MONITORED))
         return;
