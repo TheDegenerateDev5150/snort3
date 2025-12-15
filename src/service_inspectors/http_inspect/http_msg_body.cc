@@ -661,7 +661,6 @@ HttpJSNorm* HttpMsgBody::acquire_js_ctx_mime()
             return js_ctx;
 
         delete js_ctx;
-        js_ctx = nullptr;
     }
 
     JSNormConfig* jsn_config = get_inspection_policy()->jsn_config;
@@ -1023,8 +1022,10 @@ const Field& HttpMsgBody::get_decomp_vba_data()
     if (buf && buf_len)
         decompressed_vba_data.set(buf_len, buf, true);
     else
+    {
         decompressed_vba_data.set(STAT_NOT_PRESENT);
-
+        delete[] buf;
+    }
     return decompressed_vba_data;
 }
 
