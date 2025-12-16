@@ -594,8 +594,8 @@ uint32_t SSL_decode(
 * continuing of command inspection like ftptelnet. */
 bool IsTlsClientHello(const uint8_t* ptr, const uint8_t* end)
 {
-    /* at least 3 bytes of data - see below */
-    if ((end - ptr) < 3)
+    /* at least 4 bytes of data - see below */
+    if ((end - ptr) < 4)
         return false;
 
     if ((ptr[0] == SSL3_FIRST_BYTE) && (ptr[1] == SSL3_SECOND_BYTE))
