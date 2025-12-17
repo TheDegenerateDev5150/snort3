@@ -55,7 +55,35 @@ using namespace snort;
  * that resulted in a
  */
 static THREAD_LOCAL int ftp_cmd_pipe_index = 0;
+/*
+ * Function: is_command_valid
+ *
+ * Purpose: Validates FTP response command format to detect malformed responses
+ *
+ * Arguments: start    => Pointer to start of command
+ *            cmd_size => Size of the command
+ *
+ * Returns: bool => true if command is valid, false if malformed
+ */
+static bool is_command_valid(const char *start, size_t cmd_size) {
+    if (cmd_size >= 3 &&
+        isdigit((unsigned char)start[0]) &&
+        isdigit((unsigned char)start[1]) &&
+        isdigit((unsigned char)start[2])) {
+        return true;
+    }
 
+    if (cmd_size >= 4 &&
+        (start[0] != start[1] || start[0] != start[2] || start[0] != start[3])) {
+        return true;
+    }
+
+    if (cmd_size < 4) {
+        return true;
+    }
+
+    return false;
+}
 /*
  * Function: getIP959(char **ip_start,
  *                 char *last_char,
@@ -1538,7 +1566,17 @@ int check_ftp(FTP_SESSION* ftpssn, Packet* p, int iMode)
                     ptr++;
                 }
             }
+            //Raise an alert if the response code is not valid
+            if (!is_command_valid(req->cmd_begin, req->cmd_size))
+            {
+                ftpssn->server.response.state = FTP_RESPONSE_INV;
+                Stream::stop_inspection(p->flow, p, SSN_DIR_BOTH, -1, 0);
 
+                ftpssn->ft_ssn.fallback = true;
+                DetectionEngine::queue_event(GID_FTP, FTP_ABORTED_SESSION);
+                ++ftstats.aborted_sessions;
+                return FTPP_ALERT;
+            }
             if (encrypted)
             {
                 /* If the session wasn't already marked as encrypted...
