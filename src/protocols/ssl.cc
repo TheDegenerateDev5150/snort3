@@ -31,6 +31,10 @@
 #include "packet.h"
 #include "utils/util.h"
 
+#ifdef REG_TEST
+#include "log/messages.h"
+#endif
+
 #define THREE_BYTE_LEN(x) ((x)[2] | (x)[1] << 8 | (x)[0] << 16)
 
 #define SSL_ERROR_FLAGS \
@@ -820,8 +824,20 @@ ParseHelloResult parse_server_hello_data(const uint8_t* pkt, uint16_t size, TLSC
 
 bool parse_server_certificates(SSLV3ServerCertData* server_cert_data)
 {
-    if (!server_cert_data->certs_data or !server_cert_data->certs_len)
+    if (!server_cert_data->certs_data)
+    {
+        server_cert_data->certs_len = 0;
         return false;
+    }
+    else if (!server_cert_data->certs_len)
+    {
+        snort_free(server_cert_data->certs_data);
+        server_cert_data->certs_data = nullptr;
+#ifdef REG_TEST
+        LogMessage("Free server certificate data due to length being 0!\n");
+#endif
+        return false;
+    }
 
     const uint8_t* data = server_cert_data->certs_data;
     int len = server_cert_data->certs_len;

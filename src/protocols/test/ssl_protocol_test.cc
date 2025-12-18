@@ -30,6 +30,11 @@
 #include <CppUTest/TestHarness.h>
 #include <CppUTestExt/MockSupport.h>
 
+namespace snort
+{
+void LogMessage(char const*, ...) {}
+}
+
 using namespace snort;
 
 typedef struct X509_name_entry_st X509_NAME_ENTRY;
