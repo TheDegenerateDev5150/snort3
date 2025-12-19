@@ -106,7 +106,8 @@ void AppIdEveProcessEventHandler::handle(DataEvent& event, Flow* flow)
 
         snort_free(version);
     }
-    else if (!name.empty() and is_client_process_flag)
+
+    if ((client_id == APP_ID_NONE) and !name.empty() and is_client_process_flag)
     {
         client_id = odp_ctxt.get_eve_ca_matchers().match_eve_ca_pattern(name, conf);
 
