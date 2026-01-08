@@ -35,3 +35,5 @@ add_library ( mime OBJECT
 install (FILES ${MIME_INCLUDES}
     DESTINATION "${INCLUDE_INSTALL_PATH}/mime"
 )
+
+add_subdirectory(test)
