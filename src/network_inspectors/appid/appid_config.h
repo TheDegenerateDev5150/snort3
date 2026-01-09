@@ -149,7 +149,7 @@ public:
     bool recheck_for_portservice_appid = false;
     bool eve_http_client = true;
     bool appid_cpu_profiler = true;
-    bool inspect_ooo_flows = false;
+    bool inspect_ooo_flows = true;
     uint8_t brute_force_inprocess_threshold = DEFAULT_BRUTE_FORCE_INPROCESS_STATE_THRESHOLD;
     uint16_t max_packet_before_service_fail = DEFAULT_MAX_PKTS_BEFORE_SERVICE_FAIL;
     uint16_t max_packet_service_fail_ignore_bytes = DEFAULT_MAX_PKT_BEFORE_SERVICE_FAIL_IGNORE_BYTES;

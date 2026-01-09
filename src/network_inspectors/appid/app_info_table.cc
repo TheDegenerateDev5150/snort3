@@ -632,9 +632,9 @@ void AppInfoManager::load_odp_config(OdpContext& odp_ctxt, const char* path)
             }
             else if (!(strcasecmp(conf_key, "inspect_ooo_flows")))
             {
-                if (!(strcasecmp(conf_val, "enabled")))
+                if (!(strcasecmp(conf_val, "disabled")))
                 {
-                    odp_ctxt.inspect_ooo_flows = true;
+                    odp_ctxt.inspect_ooo_flows = false;
                     continue;
                 }
             }
