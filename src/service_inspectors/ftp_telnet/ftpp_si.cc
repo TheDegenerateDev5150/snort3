@@ -409,6 +409,7 @@ static inline int FTPResetsession(FTP_SESSION* Ftpsession)
     Ftpsession->data_chan_state = NO_STATE;
     Ftpsession->data_chan_index = -1;
     Ftpsession->data_xfer_index = -1;
+    Ftpsession->ftp_cmd_pipe_index = 0;
 
     return FTPP_SUCCESS;
 }
