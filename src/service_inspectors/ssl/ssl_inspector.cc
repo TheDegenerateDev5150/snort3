@@ -403,6 +403,11 @@ static void snort_ssl(SSL_PROTO_CONF* config, Packet* p)
         SslClientHelloEvent event(client_hello_data.host_name, p);
         DataBus::publish(pub_id, SslEventIds::CHELLO_SERVER_NAME, event);
     }
+    else if (SSL_IS_CHELLO(new_flags))
+    {
+        SslClientHelloEvent event("", p);
+        DataBus::publish(pub_id, SslEventIds::CHELLO_SERVER_NAME, event);
+    }
 
     if (server_cert.common_name != nullptr)
     {
