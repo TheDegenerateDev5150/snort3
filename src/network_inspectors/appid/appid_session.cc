@@ -789,6 +789,11 @@ bool AppIdSession::is_svc_taking_too_much_time() const
         init_bytes_without_reply > odp_ctxt.max_bytes_before_service_fail));
 }
 
+bool AppIdSession::is_midstream_svc_taking_too_much_time() const
+{
+    return srv_midstream_packet_inspected >= odp_ctxt.max_midstream_packet_before_service_fail;
+}
+
 void AppIdSession::delete_session_data()
 {
     api.service.reset();
