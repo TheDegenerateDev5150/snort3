@@ -263,6 +263,21 @@ TEST(ssl_protocol_tests, ssl_cert_common_name_parsing)
     CHECK(true);
 }
 
+TEST(ssl_protocol_tests, ssl_decode_v2_server_hello_size_8)
+{
+    uint8_t test_data[8] = {
+        0x16,                       // Content Type
+        0x03, 0x03,             // Version: TLS 1.2
+        0x00, 0x03,             // Length
+        0x00, 0x00, 0x02    // pkt[7]==2 triggers SSLv2 server hello check
+    };
+
+    uint32_t result = SSL_decode(test_data, sizeof(test_data), 0, 0,
+        nullptr, nullptr, 0, nullptr, nullptr, nullptr, nullptr);
+
+    CHECK(result != SSL_ARG_ERROR_FLAG);
+}
+
 int main(int argc, char** argv)
 {
     return CommandLineTestRunner::RunAllTests(argc, argv);
