@@ -728,6 +728,11 @@ void AppIdSession::set_client_appid_data(AppId id, char* version, bool published
     if (id <= APP_ID_NONE or id == APP_ID_HTTP)
         return;
 
+    if (id == APP_ID_SSL_CLIENT and api.service.get_id() == APP_ID_QUIC)
+    {
+        id = APP_ID_QUIC;
+    }
+
     AppId cur_id = api.client.get_id();
     if (id != cur_id)
     {
