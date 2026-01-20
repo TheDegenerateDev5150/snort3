@@ -126,7 +126,7 @@ TEST(ssl_protocol_tests, parse_server_key_exchange_invalid_curve_type)
     uint8_t test_data[3] = { 0x02, 0xFF, 0xFF }; // Invalid curve type
     auto result = parse_server_key_exchange(test_data, sizeof(test_data), &tls_params);
     CHECK_EQUAL(false, result);
-    CHECK_EQUAL(0, tls_params.curve);
+    CHECK_EQUAL(-1, tls_params.curve);
 }
 
 TEST(ssl_protocol_tests, parse_server_key_exchange_invalid_len)
@@ -135,7 +135,7 @@ TEST(ssl_protocol_tests, parse_server_key_exchange_invalid_len)
     uint8_t test_data[2] = { 0x03, 0xFF }; // Invalid length, should be at least 3 bytes
     auto result = parse_server_key_exchange(test_data, sizeof(test_data), &tls_params);
     CHECK_EQUAL(false, result);
-    CHECK_EQUAL(0, tls_params.curve);
+    CHECK_EQUAL(-1, tls_params.curve);
 }
 
 TEST(ssl_protocol_tests, parse_server_hello_tls_1_3)
